@@ -129,8 +129,10 @@
 3. GitHub 공유 준비 (진행 중):
    - ✅ `.gitignore`(tia-projects/·settings.local.json 제외), `README.md`(스킬+좌표기록+새컴퓨터 체크리스트), `Start-Tia.ps1` TIA버전 자동탐지
    - ✅ 로컬 git init + 커밋 완료 (branch `main`, 13파일, 회사프로젝트 제외 검증됨)
-   - ⬜ **push 대기**: GitHub private 저장소 생성 + 인증은 **사용자가 직접** (Claude는 비밀번호/토큰 입력 불가). gh CLI 한 줄 또는 웹생성+`git push` 안내함.
-   - 이식성: 좌표는 머신별(1920×1080 기준) — 점진 개선 예정. Claude가 격자로 재조정 가능.
+   - ✅ 범용화 1차 패스 완료 (Coords.ps1 중앙화 등 — 위 참고)
+   - ✅ **포터블 zip 생성**: `Desktop\bsfa-tia-toolkit.zip` (커밋된 파일만, 회사 프로젝트 제외)
+   - ⬜ **push**: 사용자가 **메인 컴퓨터(이미 인증됨)**에서 zip 풀고 push 예정 — 이 컴퓨터엔 GitHub 흔적 안 남기려는 의도. 인증은 사용자 직접(Claude 비번/토큰 입력 불가).
+   - 로컬 흔적: 이 컴퓨터의 `.git` 폴더(자격증명 없음, 로컬 전용)는 남아 있음 — 원하면 제거 가능.
 
 ## 9. 용어집
 
