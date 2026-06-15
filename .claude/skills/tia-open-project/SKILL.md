@@ -8,8 +8,8 @@ description: Open a project in Siemens TIA Portal (launch TIA if needed, then op
 Drives the TIA Portal **desktop GUI** via PowerShell helpers (screen capture + clicks).
 All steps are **read-only** — never save / modify / download.
 
-Project root: `C:\Users\부산자동화\Desktop\bsfa-tia-test`
-Helpers: `tools\desktop\Ui.ps1` (capture/click/activate/grid), `tools\tia\Start-Tia.ps1`, `tools\tia\Open-Project.ps1`
+Scripts are under the project's `tools/` folder (paths relative to the project root; Claude resolves the absolute path for this machine). Screen coordinates are centralized in `tools/tia/Coords.ps1` — edit only that file to re-calibrate on a different display.
+Helpers: `tools/desktop/Ui.ps1` (capture/click/activate/grid), `tools/tia/Start-Tia.ps1`, `tools/tia/Open-Project.ps1`, `tools/tia/Coords.ps1`
 
 ## Procedure
 1. **Launch/activate**: run `tools\tia\Start-Tia.ps1 -Grid`. Opens TIA to the Portal "Open existing project" start screen (or activates+maximizes if already running). Wait until the start screen shows.

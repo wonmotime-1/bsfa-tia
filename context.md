@@ -108,6 +108,9 @@
 - `tools/tia/Open-Project.ps1` — 시작화면에서 프로젝트 열기(더블클릭+HSP). ✅ (단, 행 선택은 아래 주의)
 - `tools/tia/Export-TagTable.ps1 -OutPath` — 열린 태그테이블 내보내기(자기완결: Export→경로→OK→성공창 닫기→파일검증). ✅ 483B 생성 확인
 - `tools/tia/Close-Project.ps1` — Ctrl+W로 저장없이 닫기. ✅
+- `tools/tia/Coords.ps1` — 모든 화면 좌표 한 곳 모음(범용화). 새 컴퓨터/해상도는 이 파일만 수정.
+
+**범용화(이식성) 1차 패스 완료 (2026-06-15):** Start-Tia 버전 자동탐지(V18/19/20), 좌표 전부 `Coords.ps1`로 분리 + 해상도 불일치 경고(`Test-TiaResolution`), 스크립트 간 경로 `$PSScriptRoot` 상대, SKILL.md 절대경로 제거. → 다른 컴퓨터에선 **Coords.ps1만 조정**하면 동작(또는 Claude가 격자로 재조정). 완전 비전-only 자동화는 추후 과제.
 
 스킬(작업 단위, `.claude/skills/`): ✅ 생성
 - `tia-open-project` (트리거: "프로젝트 열어줘") / `tia-export-tags` ("태그 내보내줘") / `tia-close-project` ("닫아줘")
@@ -123,7 +126,11 @@
 **다음 세션 (사용자 요청: 점검 + 개념 정리 한꺼번에):**
 1. 스킬 실사용 점검: "프로젝트 열어줘"/"태그 내보내줘"/"닫아줘"로 트리거되는지 확인.
 2. **학습 로드맵** 진행 (PANELTEST를 교과서로): 큰그림→구성→데이터(추출 가능/불가, 이유)→래더 vs SCL→자동화 적용점.
-3. GitHub 공유 준비: `.gitignore`로 `tia-projects/` 제외, private 저장소 (보류해뒀던 작업).
+3. GitHub 공유 준비 (진행 중):
+   - ✅ `.gitignore`(tia-projects/·settings.local.json 제외), `README.md`(스킬+좌표기록+새컴퓨터 체크리스트), `Start-Tia.ps1` TIA버전 자동탐지
+   - ✅ 로컬 git init + 커밋 완료 (branch `main`, 13파일, 회사프로젝트 제외 검증됨)
+   - ⬜ **push 대기**: GitHub private 저장소 생성 + 인증은 **사용자가 직접** (Claude는 비밀번호/토큰 입력 불가). gh CLI 한 줄 또는 웹생성+`git push` 안내함.
+   - 이식성: 좌표는 머신별(1920×1080 기준) — 점진 개선 예정. Claude가 격자로 재조정 가능.
 
 ## 9. 용어집
 

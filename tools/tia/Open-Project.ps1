@@ -21,21 +21,24 @@
 param([int]$RecentIndex = 1, [switch]$Grid)
 
 . "$PSScriptRoot\..\desktop\Ui.ps1"
+. "$PSScriptRoot\Coords.ps1"
+Test-TiaResolution
 
 Ui-Activate -Maximize | Out-Null
 Start-Sleep -Milliseconds 500
 
-# Make sure the "Open existing project" option is selected (radio ~ (290,162)).
-# (It is the default after Start-Tia; clicking it just guarantees the recent list shows.)
-Ui-Click 290 162
+# Make sure the "Open existing project" option is selected (so the recent list shows).
+$opt = $TiaCoords.OpenExistingOpt
+Ui-Click $opt[0] $opt[1]
 Start-Sleep -Milliseconds 500
 
-# Recent list: row 1 center ~y=180, each row ~+30px
-$rowY = 150 + ($RecentIndex * 30)
-Write-Output "Double-clicking recent project row $RecentIndex at (800,$rowY)..."
-Ui-DoubleClick 800 $rowY
+# Recent list: row 1 center, each subsequent row +RecentRowStep in Y.
+$rx   = $TiaCoords.RecentRow1[0]
+$rowY = $TiaCoords.RecentRow1[1] + (($RecentIndex - 1) * $TiaCoords.RecentRowStep)
+Write-Output "Double-clicking recent project row $RecentIndex at ($rx,$rowY)..."
+Ui-DoubleClick $rx $rowY
 
 Write-Output "Waiting ~20s for load / HSP dialog..."
 Start-Sleep -Seconds 20
 if ($Grid) { Capture-Screen -Grid } else { Capture-Screen }
-Write-Output "RESULT: open initiated. NEXT (procedure): if HSP dialog -> click Open (1125,672); then if First-steps page -> click Project view (60,1016); verify tree shows the PLC."
+Write-Output "RESULT: open initiated. NEXT (procedure): if HSP dialog -> click Open ($($TiaCoords.HspOpen -join ',')); then if First-steps page -> click Project view ($($TiaCoords.ProjectViewLink -join ',')); verify tree shows the PLC."

@@ -5,8 +5,8 @@ description: Close the currently open project in Siemens TIA Portal without savi
 
 # Close the open TIA Portal project (no save)
 
-Project root: `C:\Users\부산자동화\Desktop\bsfa-tia-test`
-Helper: `tools\tia\Close-Project.ps1`
+Script is under the project's `tools/` folder (relative to the project root; Claude resolves the absolute path).
+Helper: `tools/tia/Close-Project.ps1`
 
 ## Procedure
 1. Run `tools\tia\Close-Project.ps1`. It activates TIA and sends **Ctrl+W** (Project > Close).

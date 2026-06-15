@@ -7,8 +7,8 @@ description: Export a PLC tag table from Siemens TIA Portal to an XML file. Use 
 
 **Read-only.** Produces the canonical tag-table XML (one `<Tag ...>name</Tag>` per row inside `<Tagtable>`).
 
-Project root: `C:\Users\부산자동화\Desktop\bsfa-tia-test`
-Helpers: `tools\desktop\Ui.ps1`, `tools\tia\Export-TagTable.ps1`
+Scripts are under the project's `tools/` folder (relative to the project root; Claude resolves the absolute path). Screen coordinates are centralized in `tools/tia/Coords.ps1`.
+Helpers: `tools/desktop/Ui.ps1`, `tools/tia/Export-TagTable.ps1`, `tools/tia/Coords.ps1`
 
 ## Procedure
 1. **Ensure a project is open** in Project view. If not, use the **tia-open-project** skill first.

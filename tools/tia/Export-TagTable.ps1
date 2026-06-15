@@ -12,32 +12,37 @@
 param([Parameter(Mandatory=$true)][string]$OutPath, [switch]$Grid)
 
 . "$PSScriptRoot\..\desktop\Ui.ps1"
+. "$PSScriptRoot\Coords.ps1"
+Test-TiaResolution
 
 Ui-Activate -Maximize | Out-Null
 Start-Sleep -Milliseconds 400
 
-Write-Output "Clicking Export icon (352,135)..."
-Ui-Click 352 135
+$ic = $TiaCoords.ExportIcon
+Write-Output "Clicking Export icon ($($ic -join ','))..."
+Ui-Click $ic[0] $ic[1]
 Start-Sleep -Milliseconds 1500
 
 Write-Output "Filling export path..."
-Ui-Click 830 443            # path text field
+$pf = $TiaCoords.ExportPathField
+Ui-Click $pf[0] $pf[1]      # path text field
 Start-Sleep -Milliseconds 300
 Ui-Key "^a"                 # select existing text
 Start-Sleep -Milliseconds 150
 Ui-Paste $OutPath           # paste path (clipboard = Korean-safe)
 Start-Sleep -Milliseconds 500
 
-Write-Output "Clicking OK (1054,623)..."
-Ui-Click 1054 623
+$ok = $TiaCoords.ExportOk
+Write-Output "Clicking OK ($($ok -join ','))..."
+Ui-Click $ok[0] $ok[1]
 Start-Sleep -Seconds 2
 
-# Dismiss the "Export completed successfully" dialog (OK button ~1085,562).
-# The file is only flushed to disk once this dialog closes.
+# Dismiss the "Export completed successfully" dialog. File flushes only after this closes.
 Ui-Activate -Maximize | Out-Null
 Start-Sleep -Milliseconds 400
-Write-Output "Dismissing success dialog (1085,562)..."
-Ui-Click 1085 562
+$sk = $TiaCoords.ExportSuccessOk
+Write-Output "Dismissing success dialog ($($sk -join ','))..."
+Ui-Click $sk[0] $sk[1]
 Start-Sleep -Seconds 3
 
 if (Test-Path $OutPath) {
