@@ -9,6 +9,9 @@ tia-projects/
 # Claude Code 로컬 전용 설정 (머신별 권한 등 — 공유 안 함)
 .claude/settings.local.json
 
+# io-convert가 생성한 데모 출력물 (재생성 가능)
+tools/io-convert/*-out.xml
+
 # 임시/작업 파일
 *.tmp
 *~

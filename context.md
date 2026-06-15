@@ -1,7 +1,7 @@
 # BSFA 프로젝트 컨텍스트
 
 > 이 문서는 논의를 진행하며 계속 확장하는 살아있는 문서입니다.
-> 마지막 갱신: 2026-06-11
+> 마지막 갱신: 2026-06-16
 
 ## 1. 회사 소개
 
@@ -130,9 +130,30 @@
    - ✅ `.gitignore`(tia-projects/·settings.local.json 제외), `README.md`(스킬+좌표기록+새컴퓨터 체크리스트), `Start-Tia.ps1` TIA버전 자동탐지
    - ✅ 로컬 git init + 커밋 완료 (branch `main`, 13파일, 회사프로젝트 제외 검증됨)
    - ✅ 범용화 1차 패스 완료 (Coords.ps1 중앙화 등 — 위 참고)
-   - ✅ **포터블 zip 생성**: `Desktop\bsfa-tia-toolkit.zip` (커밋된 파일만, 회사 프로젝트 제외)
-   - ⬜ **push**: 사용자가 **메인 컴퓨터(이미 인증됨)**에서 zip 풀고 push 예정 — 이 컴퓨터엔 GitHub 흔적 안 남기려는 의도. 인증은 사용자 직접(Claude 비번/토큰 입력 불가).
+   - ✅ `ARCHITECTURE.md` 추가 (Mermaid 구조도 GitHub 자동렌더 + 역할표 + 예시흐름 + 시작안내), README에서 링크. 시각화 구조도도 보여줌(visualize).
+   - ✅ **포터블 zip 생성**: `Desktop\bsfa-tia-toolkit.zip` (28.5KB, 커밋된 15파일, 회사 프로젝트 제외, ARCHITECTURE 포함)
+   - ⬜ **push**: 사용자가 zip을 **본인 메일로 직접 발송 → 맥북에서 풀고 push** 예정. 맥북: 압축해제 → `git init && git add -A && git commit` → private 저장소 생성 후 push(gh 또는 웹). 인증은 사용자 직접.
    - 로컬 흔적: 이 컴퓨터의 `.git` 폴더(자격증명 없음, 로컬 전용)는 남아 있음 — 원하면 제거 가능.
+
+## 10. 최신 진행 (2026-06-16) — 학습 세션 + IO 변환 도구(효율화 1순위)
+
+**학습 (방식은 CLAUDE.md에 규정함 — 한번에 하나씩/비유/화면보며/사용자가 알 것과 Claude가 할 것 분리):**
+사용자가 **태그 · 태그 테이블 · Export/Import · 전체 루프(추출→변환→넣기)** 를 큰 그림으로 이해. PANELTEST의 `CC01` 태그 테이블을 실제로 열어 설명: 한 줄=태그 1개, 주소(`%I`입력/`%Q`출력/`%M`메모리, 바이트.비트), `Bool`, 명명규칙(`P_스테이션_방향_기능`), 비상정지 2채널=안전이중화(F-CPU), MCC On 피드백, `예비`. CC01을 XML로 export(88태그→`tia-projects/CC01_export.xml`, 14.4KB)해 **표↔글자 1:1 대응** 확인. 사용자가 수동 export도 직접 성공.
+
+**역할 분담 확정:** Claude=기술 디테일(주소·XML·SCL), 사용자=방향 지시+결과 승인, BSFA PLC 엔지니어=기술 검증. **사용자는 PLC 개념을 깊이 몰라도 됨** — 목표는 효율.
+
+**효율화 1순위 = 태그/IO 입력 자동화** (사용자 선택, 워크숍 최고효과·저위험):
+- **`tools/io-convert/Convert-IoListToTags.ps1`** (+ `sample-io-list.csv`): CSV(엑셀 저장본) → TIA 태그테이블 XML. ✅ 검증 (한글·`%I/%Q/%IW`·`Bool/Int` 보존, 출력 형식이 TIA export와 **동일** → import 가능). **TIA·라이선스 불필요**(순수 텍스트 변환).
+- CSV 컬럼: `Name, DataType, Address, Comment`.
+- ⚠️ **import(TIA에 넣기)는 라이선스 필요** → 변환·읽기는 되고, 실제 넣기는 라이선스 PC에서.
+
+### ▶ 다음 세션 (최신 — 이게 우선)
+1. BSFA **실제 I/O 리스트(Excel) 샘플**을 받아 converter 컬럼을 실제 양식에 맞추기 (없으면 현재 4컬럼 양식 사용).
+2. (선택) converter가 `.xlsx`를 직접 읽도록 확장 (현재는 CSV; 엑셀→CSV 저장 필요).
+3. 라이선스 PC에서 **import 테스트**로 전체 루프 완성 (라이선스 확인: USB/다른PC/서버 — 여전히 열린 과제).
+4. GitHub push: zip `Desktop\bsfa-tia-toolkit.zip`는 **io-convert 추가 전 버전 → 공유 전 재생성 필요**.
+
+> 참고: 위 6·8번의 옛 "다음 세션" 목록은 과거 기록. **이 10번 항목이 최신.**
 
 ## 9. 용어집
 
