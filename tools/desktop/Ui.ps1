@@ -134,3 +134,26 @@ function Ui-Type        { param([string]$Text) [System.Windows.Forms.SendKeys]::
 function Ui-Key         { param([string]$Keys) [System.Windows.Forms.SendKeys]::SendWait($Keys) }
 # Korean text is unreliable via SendKeys, so use clipboard paste instead
 function Ui-Paste       { param([string]$Text) Set-Clipboard -Value $Text; Start-Sleep -Milliseconds 150; [System.Windows.Forms.SendKeys]::SendWait("^v") }
+
+# --- Keyboard via keybd_event (RELIABLE: works in TIA where SendKeys / double-click / right-click FAIL) ---
+# Lesson 2026-06-16: SendKeys arrows did NOT reach the TIA tree; keybd_event DOES. Prefer these for navigation.
+# Resolution-independent (no coordinates) -> portable across machines.
+# Virtual keys: Enter=0x0D Esc=0x1B Up=0x26 Down=0x28 Left=0x25 Right=0x27 Tab=0x09 F2=0x71
+function Ui-Press {
+    param([int]$Vk, [int]$Repeat = 1)
+    for ($i = 0; $i -lt $Repeat; $i++) {
+        [WinUI]::keybd_event([byte]$Vk, [byte]0, [uint32]0, 0)   # key down
+        Start-Sleep -Milliseconds 40
+        [WinUI]::keybd_event([byte]$Vk, [byte]0, [uint32]2, 0)   # key up (KEYEVENTF_KEYUP=0x02)
+        Start-Sleep -Milliseconds 220
+    }
+}
+function Ui-Enter    { Ui-Press 0x0D }
+function Ui-Esc      { Ui-Press 0x1B }
+function Ui-Down     { param([int]$N = 1) Ui-Press 0x28 $N }
+function Ui-Up       { param([int]$N = 1) Ui-Press 0x26 $N }
+function Ui-Expand   { Ui-Press 0x27 }   # Right arrow: expand a collapsed tree folder
+function Ui-Collapse { Ui-Press 0x25 }   # Left arrow: collapse
+# IMPORTANT: before sending keys to the project tree, single-click the target row FIRST to put
+# keyboard focus on the tree. Otherwise Enter may hit a toolbar button (e.g. opens "New project").
+function Ui-FocusClick { param([int]$X, [int]$Y) [WinUI]::Click($X, $Y); Start-Sleep -Milliseconds 350 }

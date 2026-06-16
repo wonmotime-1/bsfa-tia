@@ -147,7 +147,16 @@
 - CSV 컬럼: `Name, DataType, Address, Comment`.
 - ⚠️ **import(TIA에 넣기)는 라이선스 필요** → 변환·읽기는 되고, 실제 넣기는 라이선스 PC에서.
 
+### 2026-06-16 (이어서) — 프로그램 블록 개념 학습 + 라이선스 경계 발견
+**학습(웹/IT 비유로):** "프로그램 블록"은 **폴더**이고 그 안에 블록 4종류가 산다 — **OB**(=main()/콜백, 자동실행), **FC**(=순수함수, 기억X), **FB**(=클래스 인스턴스, 상태 기억 → 전용 DB를 달고 다님), **DB**(=값만 저장, 로직X). 사용자 핵심 혼동("프로그램블록=데이터블록?")을 **폴더📁 vs 그 안의 파일📄**로 해소. **태그≠블록**, DB는 'Program blocks 폴더' 안의 한 종류.
+**구조 확인(PANELTEST, GUI 제한모드):** PLC 1대 `A2_CC01_CPU [CPU 1517F-3]`(F=안전) → 📋태그(Default[725]/Timer[254]/InOut(CC01[88]...) 등) + 📦Program blocks(기능폴더: 01_공통/02_제어/03_장비/04_인터록/05_Safety/09_PCR/System). 예) **02_제어 = FC_Global[FC300] + 하위폴더(01_CC01, 02_DP, 03_OP, 04_WOP_DBs)**.
+**★ 핵심 발견 — 라이선스 경계:** 블록(FC_Global)을 열자 **"License 'STEP 7 Professional' was not found"** 오류. → **블록 편집·컴파일·다운로드·import = STEP 7 Professional 필요**. 단 **블록 열람(래더/SCL 보기)은 라이선스 없이 제한모드로 가능**(오류창 떠도 OK/Esc로 닫으면 열람됨 — ⚠️초기에 '블록 열기 전면 불가'로 **오판했다가 사용자 지적으로 정정**). **태그 보기·XML내보내기·IO변환 = 라이선스 무관**. **태그/IO 자동화가 1순위인 이유 재확인**(라이선스 없이 당장 가능).
+**입력 방식 교훈(이 PC):** TIA 자동조작 시 **마우스 단일 좌클릭 + 저수준 키입력(keybd_event)만 안정**. 더블클릭/우클릭 컨텍스트메뉴/SendKeys는 불안정 → 폴더 펼치기는 토글(▶) 단일클릭, 키는 keybd_event.
+**산출물:** 학습노트 `docs/program-blocks-and-license.md`. **울트라코드(멀티에이전트)는 이 작업(단일화면 조작+대화형 교육)엔 부적합** 판단 → 단일 흐름 자율 진행.
+**후속(스킬화·범용화·공유):** 검증된 keybd 입력을 `Ui.ps1` 헬퍼(`Ui-Enter`/`Ui-Down`/`Ui-Up`/`Ui-Expand`/`Ui-Collapse`/`Ui-Esc`/`Ui-FocusClick`)로 굳힘 — **좌표 무관이라 타 PC 범용**. 병목·착오 누적 로그 `docs/tia-gui-troubleshooting.md` 신설. **GitHub 업로드용 폴더** `Desktop\bsfa-upload` 생성(회사프로젝트·.git·settings.local 제외, 20파일) → 사용자가 웹에서 드래그앤드롭 예정(1회성, 비메인 PC).
+
 ### ▶ 다음 세션 (최신 — 이게 우선)
+0. **블록 열람·래더→SCL 분석은 이 PC에서도 가능**(제한모드, 라이선스 무관). FC_Global(LAD, 0.1초 펄스 생성기) 열람·SCL 번역 시연 완료. SCL 소스 생성(export)·편집·import는 STEP 7 Professional 라이선스 PC에서. (★ '블록 전면 불가'는 오판이었음 — 열람은 됨. 입력 방식·병목은 `docs/tia-gui-troubleshooting.md` 참고)
 1. BSFA **실제 I/O 리스트(Excel) 샘플**을 받아 converter 컬럼을 실제 양식에 맞추기 (없으면 현재 4컬럼 양식 사용).
 2. (선택) converter가 `.xlsx`를 직접 읽도록 확장 (현재는 CSV; 엑셀→CSV 저장 필요).
 3. 라이선스 PC에서 **import 테스트**로 전체 루프 완성 (라이선스 확인: USB/다른PC/서버 — 여전히 열린 과제).
